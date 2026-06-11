@@ -1,11 +1,13 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, inject, onMounted, reactive, ref } from 'vue'
 import { ClipboardCheck, Send } from 'lucide-vue-next'
 
 import { examApi } from '../api/modules'
 import EmptyState from '../components/EmptyState.vue'
 import MessageBar from '../components/MessageBar.vue'
 import { subjects } from '../constants/options'
+
+const navigateTo = inject('navigateTo')
 
 const studentName = ref('')
 const subject = ref('科目一')
@@ -91,7 +93,13 @@ onMounted(loadQuestions)
 
       <MessageBar :message="message.text" :type="message.type" />
 
-      <EmptyState v-if="!loading && questions.length === 0" title="暂无题目" description="该科目还没有配置题库。" />
+      <EmptyState
+        v-if="!loading && questions.length === 0"
+        title="暂无题目"
+        description="该科目还没有配置题库，请先前往约考规则页面配置。"
+        action-text="前往配置"
+        @action="navigateTo('rules')"
+      />
 
       <div v-for="(question, index) in questions" :key="question.id" class="question-block">
         <strong>{{ index + 1 }}. {{ question.question }}</strong>

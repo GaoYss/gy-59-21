@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import {
   CalendarCheck,
   ClipboardList,
@@ -24,6 +24,12 @@ const navItems = [
 
 const activeKey = ref('appointments')
 const activeItem = computed(() => navItems.find((item) => item.key === activeKey.value))
+
+function navigateTo(key) {
+  activeKey.value = key
+}
+
+provide('navigateTo', navigateTo)
 </script>
 
 <template>
